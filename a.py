@@ -10,7 +10,7 @@ st.set_page_config(page_title="مطابق البنك الذكي", layout="wide")
 st.title("🏦 نظام مطابقة كشوفات بنك فلسطين")
 st.markdown("قم برفع ملف البنك (PDF) وملف العملاء (Excel) للمطابقة التلقائية.")
 
-# 1. وظيفة استخراج البيانات من ملف البنك (بناءً على تنسيق بنك فلسطين)
+# 1. وظيفة استخراج البيانات من ملف البنك
 def extract_bank_received(pdf_file):
     data = []
     with pdfplumber.open(pdf_file) as pdf:
@@ -18,7 +18,6 @@ def extract_bank_received(pdf_file):
             table = page.extract_table()
             if table:
                 for row in table[1:]:
-                    # العمود 1 للمبالغ المستلمة، العمود 4 للتفاصيل، العمود 5 للتاريخ الفعلي
                     if len(row) > 5 and row[1] and row[1].strip(): 
                         try:
                             data.append({
@@ -36,13 +35,12 @@ with col1:
 with col2:
     excel_file = st.file_uploader("ارفع ملف الإكسل (Excel)", type=["xlsx"])
 
-# 3. منطق المعالجة والمطابقة (الكود الذي طلبته)
+# 3. منطق المعالجة والمطابقة
 if bank_file and excel_file:
     if st.button("بدء عملية المطابقة"):
         bank_data = extract_bank_received(bank_file)
         df_excel = pd.read_excel(excel_file)
         
-        # البحث الذكي عن أسماء الأعمدة (الاسم والمبلغ)
         name_col = next((c for c in df_excel.columns if 'اسم' in str(c) or 'name' in str(c).lower()), None)
         amount_col = next((c for c in df_excel.columns if 'مبلغ' in str(c) or 'amount' in str(c).lower()), None)
 
@@ -63,15 +61,11 @@ if bank_file and excel_file:
                 
                 best_score = 0
                 for b_row in bank_data:
-                    # فحص التشابه بين الاسم في اكسل وتفاصيل البنك
                     score = fuzz.token_sort_ratio(name.lower(), b_row['details'].lower())
-                    
                     if score > 70: 
                         if score > best_score:
                             best_score = score
                             date_found = b_row['date']
-                            
-                            # مقارنة المبالغ
                             if abs(b_row['amount'] - amount) < 0.1:
                                 status = "✅"
                                 note = "تطابق تام"
@@ -80,14 +74,13 @@ if bank_file and excel_file:
                                 note = f"الاسم مطابق لكن المبلغ بالبنك {b_row['amount']}"
 
                 results.append({
-                    "الاسم المطلـوب": name,
+                    "الاسم المطلوب": name,
                     "المبلغ المطلوب": amount,
-                    "الحالـة": status,
+                    "الحالة": status,
                     "التاريخ بالبنك": date_found,
                     "ملاحظات": note
                 })
             
-            # عرض النتائج في جدول ملون
             df_final = pd.DataFrame(results)
             st.subheader("📊 نتائج المطابقة")
             
@@ -97,9 +90,9 @@ if bank_file and excel_file:
                 if val == "❌": return 'background-color: #f8d7da'
                 return ''
 
-            st.table(df_final.style.applymap(color_status, subset=['الحالـة']))
+            # تم تحديث الدالة هنا من applymap إلى map لتجنب الخطأ
+            st.table(df_final.style.map(color_status, subset=['الحالة']))
 
-            # زر تحميل النتيجة
             output = io.BytesIO()
             with pd.ExcelWriter(output, engine='openpyxl') as writer:
                 df_final.to_excel(writer, index=False)
