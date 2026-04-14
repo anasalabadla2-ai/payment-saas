@@ -1,6 +1,5 @@
-streamlit
 pandas
-openpyxl
-rapidfuzz
 pdfplumber
-unidecode
+fuzzywuzzy
+python-Levenshtein
+openpyxl
