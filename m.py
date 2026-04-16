@@ -61,45 +61,19 @@ today_str = date.today().strftime("%Y-%m-%d")
 # ╔══════════════════════════════════════════╗
 #   🔤 نظام التحويل عربي ↔ إنجليزي
 # ╚══════════════════════════════════════════╝
-
-# جدول تحويل الحروف العربية → أقرب صوت إنجليزي
 ARABIC_TO_LATIN = {
     'ا': 'a', 'أ': 'a', 'إ': 'a', 'آ': 'a',
-    'ب': 'b',
-    'ت': 't',
-    'ث': 'th',
-    'ج': 'j',
-    'ح': 'h',
-    'خ': 'kh',
-    'د': 'd',
-    'ذ': 'th',
-    'ر': 'r',
-    'ز': 'z',
-    'س': 's',
-    'ش': 'sh',
-    'ص': 's',
-    'ض': 'd',
-    'ط': 't',
-    'ظ': 'z',
-    'ع': 'a',
-    'غ': 'gh',
-    'ف': 'f',
-    'ق': 'q',
-    'ك': 'k',
-    'ل': 'l',
-    'م': 'm',
-    'ن': 'n',
-    'ه': 'h',
-    'و': 'w',
-    'ي': 'y', 'ى': 'y',
-    'ة': 'h',
-    'ء': 'a',
-    'ئ': 'y',
-    'ؤ': 'w',
+    'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j',
+    'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'th',
+    'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh',
+    'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z',
+    'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'q',
+    'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+    'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'y',
+    'ة': 'h', 'ء': 'a', 'ئ': 'y', 'ؤ': 'w',
     'لا': 'la',
 }
 
-# قاموس الأسماء الشائعة عربي → إنجليزي (مخصص للأسماء الفلسطينية والعربية)
 NAME_DICT_AR_TO_EN = {
     # أسماء نساء
     "انجود":   ["njwad", "enjwad", "anjoud", "njoud", "engoud"],
@@ -145,7 +119,6 @@ NAME_DICT_AR_TO_EN = {
     "زينب":    ["zainab", "zaynab"],
     "ندى":     ["nada", "neda"],
     "شيرين":   ["shirin", "shireen"],
-
     # أسماء رجال
     "كمال":    ["kamal", "karnal", "kemal"],
     "محمد":    ["mohammad", "mohammed", "muhammad", "mohamad"],
@@ -216,37 +189,33 @@ NAME_DICT_AR_TO_EN = {
     "مازن":    ["mazen", "mazin"],
     "يزيد":    ["yazid", "yazeed"],
     "شريف":    ["sharif", "sherif"],
-
-    # ألقاب / عائلات فلسطينية شائعة
-    "العبادله":  ["alabadla", "alabadlah", "alabadleh", "aladla"],
-    "العبادلة":  ["alabadla", "alabadlah", "alabadleh"],
-    "العيادله":  ["alayada", "alayadia", "aliadlh", "alayadleh"],
-    "العيادلة":  ["alayada", "alayadia", "alayadleh"],
-    "العبدالله": ["alabdla", "alabdlah", "alabdallah"],
-    "الاسطل":   ["alastal", "alastel"],
-    "الكطوت":   ["alkatout", "alkatut"],
-    "العقاد":   ["alaqad", "alakkad"],
-    "بركة":     ["baraka", "barka"],
-    "المصري":   ["almasri", "almasry", "almasree"],
-    "ابو":      ["abu", "abo"],
-    "عطيه":     ["atiyah", "atia", "atieh"],
-    "عوف":      ["awf", "ouf"],
+    # ألقاب / عائلات
+    "العبادله":   ["alabadla", "alabadlah", "alabadleh", "aladla"],
+    "العبادلة":   ["alabadla", "alabadlah", "alabadleh"],
+    "العيادله":   ["alayada", "alayadia", "aliadlh", "alayadleh"],
+    "العيادلة":   ["alayada", "alayadia", "alayadleh"],
+    "العبدالله":  ["alabdla", "alabdlah", "alabdallah"],
+    "الاسطل":     ["alastal", "alastel"],
+    "الكطوت":     ["alkatout", "alkatut"],
+    "العقاد":     ["alaqad", "alakkad"],
+    "بركة":       ["baraka", "barka"],
+    "المصري":     ["almasri", "almasry", "almasree"],
+    "ابو":        ["abu", "abo"],
+    "عطيه":       ["atiyah", "atia", "atieh"],
+    "عوف":        ["awf", "ouf"],
 }
 
-# قاموس عكسي: إنجليزي → عربي
 NAME_DICT_EN_TO_AR = {}
-for ar, en_list in NAME_DICT_AR_TO_EN.items():
-    for en in en_list:
-        NAME_DICT_EN_TO_AR[en.lower()] = ar
+for _ar, _en_list in NAME_DICT_AR_TO_EN.items():
+    for _en in _en_list:
+        NAME_DICT_EN_TO_AR[_en.lower()] = _ar
 
 
 def arabic_to_phonetic(text: str) -> str:
-    """تحويل نص عربي إلى مقابله الصوتي اللاتيني"""
     result = ""
     i = 0
     text = text.strip()
     while i < len(text):
-        # جرب حرفين أولاً
         two = text[i:i+2]
         if two in ARABIC_TO_LATIN:
             result += ARABIC_TO_LATIN[two]
@@ -264,27 +233,16 @@ def arabic_to_phonetic(text: str) -> str:
 
 
 def normalize_for_match(text: str) -> str:
-    """
-    توحيد النص للمقارنة:
-    - إزالة التشكيل
-    - توحيد الأحرف العربية المتشابهة
-    - تحويل إلى lowercase
-    """
-    # إزالة التشكيل
     text = re.sub(r'[\u064B-\u065F\u0670]', '', text)
     text = text.strip().lower()
-    # توحيد الأحرف
     for a, b in [("أ","ا"),("إ","ا"),("آ","ا"),("ة","ه"),("ى","ي"),("ك","ك")]:
         text = text.replace(a, b)
     text = re.sub(r'\s+', ' ', text)
     return text
 
 
-def name_to_search_variants(name: str) -> list[str]:
-    """
-    توليد كل المتغيرات الممكنة لاسم ما (عربي أو إنجليزي)
-    للمقارنة مع الجانب الآخر
-    """
+def name_to_search_variants(name: str) -> list:
+    from itertools import product as iproduct
     variants = set()
     name_clean = normalize_for_match(name)
     variants.add(name_clean)
@@ -292,37 +250,27 @@ def name_to_search_variants(name: str) -> list[str]:
     is_arabic = bool(re.search(r'[\u0600-\u06FF]', name))
 
     if is_arabic:
-        # 1. الصوتي المباشر
         phonetic = arabic_to_phonetic(name_clean)
         variants.add(phonetic)
 
-        # 2. البحث في القاموس كلمة كلمة
         words = name_clean.split()
         en_words_options = []
         for word in words:
-            word_variants = [word]  # الكلمة الأصلية
-            # بحث مباشر
+            word_variants = [word]
             if word in NAME_DICT_AR_TO_EN:
                 word_variants.extend(NAME_DICT_AR_TO_EN[word])
-            # بحث بعد التوحيد
             norm_word = normalize_for_match(word)
             if norm_word in NAME_DICT_AR_TO_EN:
                 word_variants.extend(NAME_DICT_AR_TO_EN[norm_word])
-            # الصوتي
             word_variants.append(arabic_to_phonetic(word))
             en_words_options.append(list(set(word_variants)))
 
-        # 3. توليد جميع التوليفات
-        from itertools import product
-        for combo in product(*en_words_options):
+        for combo in iproduct(*en_words_options):
             variants.add(' '.join(combo))
-            # بدون مقاطع القصيرة (ال، ابو)
             filtered = [w for w in combo if len(w) > 2]
             if filtered:
                 variants.add(' '.join(filtered))
-
     else:
-        # النص إنجليزي → حوله لعربي
         words = name_clean.split()
         ar_words_options = []
         for word in words:
@@ -331,55 +279,39 @@ def name_to_search_variants(name: str) -> list[str]:
                 word_variants.append(NAME_DICT_EN_TO_AR[word])
             ar_words_options.append(list(set(word_variants)))
 
-        from itertools import product
-        for combo in product(*ar_words_options):
+        from itertools import product as iproduct2
+        for combo in iproduct2(*ar_words_options):
             variants.add(' '.join(combo))
 
     return [v for v in variants if v.strip()]
 
 
 def smart_name_similarity(name_a: str, name_b: str) -> int:
-    """
-    حساب درجة التشابه الذكية بين اسمين
-    يأخذ أعلى درجة من كل المتغيرات الممكنة
-    """
     variants_a = name_to_search_variants(name_a)
     variants_b = name_to_search_variants(name_b)
 
     best_score = 0
     for va in variants_a:
         for vb in variants_b:
-            # token_sort_ratio: يرتب الكلمات قبل المقارنة (يتجاهل الترتيب)
             s1 = fuzz.token_sort_ratio(va, vb)
-            # partial_ratio: يبحث عن التطابق الجزئي
             s2 = fuzz.partial_ratio(va, vb)
-            # token_set_ratio: الأفضل للأسماء المركبة
             s3 = fuzz.token_set_ratio(va, vb)
             score = max(s1, s2, s3)
             if score > best_score:
                 best_score = score
             if best_score == 100:
                 return 100
-
     return best_score
 
 
-def extract_names_from_detail(detail_text: str) -> list[str]:
-    """
-    استخراج الأسماء من حقل التفاصيل في كشف الحساب
-    مثل: "تحويل الى محمد احمد علي"
-    """
+def extract_names_from_detail(detail_text: str) -> list:
     names = []
-
-    # نمط: نص عربي بعد "الى" أو "من ... الى"
     patterns = [
         r'الى\s+([\u0600-\u06FF\s]{5,50}?)(?:\s*\d|$|/)',
         r'الي\s+([\u0600-\u06FF\s]{5,50}?)(?:\s*\d|$|/)',
         r'to\s+([a-zA-Z\s]{5,50}?)(?:\s*\d|$|/)',
-        # أسماء إنجليزية في كشوف البنوك مثل karnal alabadla/Njwad Alabdla
         r'/([a-zA-Z][a-zA-Z\s]{3,40})/([a-zA-Z][a-zA-Z\s]{3,40})/',
     ]
-
     for pat in patterns:
         matches = re.findall(pat, detail_text, re.IGNORECASE)
         for m in matches:
@@ -387,7 +319,6 @@ def extract_names_from_detail(detail_text: str) -> list[str]:
                 names.extend([x.strip() for x in m if x.strip()])
             elif m.strip():
                 names.append(m.strip())
-
     return names
 
 
@@ -400,12 +331,15 @@ def load_data() -> dict:
             return json.load(f)
     return {}
 
+
 def save_data(data: dict):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+
 def get_today_entries() -> list:
     return load_data().get(today_str, [])
+
 
 def add_entry(name: str, amount: float):
     data = load_data()
@@ -419,16 +353,19 @@ def add_entry(name: str, amount: float):
     })
     save_data(data)
 
+
 def delete_entry(entry_id: int):
     data = load_data()
     if today_str in data:
         data[today_str] = [e for e in data[today_str] if e["id"] != entry_id]
         save_data(data)
 
+
 def clear_today():
     data = load_data()
     data[today_str] = []
     save_data(data)
+
 
 # ╔══════════════════════════════════════════╗
 #   استخراج البيانات من الملفات
@@ -437,12 +374,14 @@ NAME_KW   = ["اسم","name","الاسم","العميل","client","customer","م
 AMOUNT_KW = ["مبلغ","amount","المبلغ","قيمة","value","total","إجمالي","رسوم","الرسوم",
              "المبالغ المستلمة","المبالغ المدفوعة","مستلمة","مدفوعة"]
 
+
 def clean_amount(val: str):
     val = re.sub(r"[^\d.]", "", str(val))
     try:
         return float(val) if val else None
     except ValueError:
         return None
+
 
 def find_col_idx(row_values, keywords):
     for i, cell in enumerate(row_values):
@@ -451,24 +390,16 @@ def find_col_idx(row_values, keywords):
             return i
     return None
 
-# ── PDF المتخصص لكشوف البنوك ──
-def extract_pdf_bank_statement(file) -> pd.DataFrame:
-    """
-    استخراج متخصص لكشوف حسابات البنوك الفلسطينية
-    يستخرج الأسماء من حقل التفاصيل
-    """
-    rows = []
 
+def extract_pdf_bank_statement(file) -> pd.DataFrame:
+    rows = []
     with pdfplumber.open(file) as pdf:
         for page in pdf.pages:
             tables = page.extract_tables()
-
             if tables:
                 for table in tables:
                     if not table:
                         continue
-
-                    # ابحث عن صف الرأس
                     header_idx = 0
                     detail_col = amount_received_col = amount_paid_col = None
 
@@ -476,8 +407,6 @@ def extract_pdf_bank_statement(file) -> pd.DataFrame:
                         if not row:
                             continue
                         row_str = [str(c).strip() if c else "" for c in row]
-
-                        # ابحث عن أعمدة التفاصيل والمبالغ
                         for ci, cell in enumerate(row_str):
                             cell_l = cell.lower()
                             if "تفاصيل" in cell_l or "detail" in cell_l or "البيان" in cell_l:
@@ -486,24 +415,20 @@ def extract_pdf_bank_statement(file) -> pd.DataFrame:
                                 amount_received_col = ci
                             if "مدفوعة" in cell_l or "paid" in cell_l or "صادرة" in cell_l or "debit" in cell_l:
                                 amount_paid_col = ci
-
                         if detail_col is not None:
                             header_idx = ri
                             break
 
-                    # استخراج البيانات
                     for row in table[header_idx + 1:]:
                         if not row:
                             continue
                         row_vals = [str(c).strip() if c else "" for c in row]
 
-                        # استخرج المبلغ (مستلم أو مدفوع)
                         amount = None
                         if amount_received_col is not None and amount_received_col < len(row_vals):
                             amount = clean_amount(row_vals[amount_received_col])
                         if (amount is None or amount == 0) and amount_paid_col is not None and amount_paid_col < len(row_vals):
                             amount = clean_amount(row_vals[amount_paid_col])
-                        # إذا لم نجد، ابحث عن أي خلية تحتوي رقم > 0
                         if amount is None or amount == 0:
                             for cell in row_vals:
                                 a = clean_amount(cell)
@@ -511,18 +436,13 @@ def extract_pdf_bank_statement(file) -> pd.DataFrame:
                                     amount = a
                                     break
 
-                        # استخرج الاسم من حقل التفاصيل
                         detail_text = ""
                         if detail_col is not None and detail_col < len(row_vals):
                             detail_text = row_vals[detail_col]
                         else:
-                            # دمج كل الخلايا كنص
                             detail_text = " ".join(row_vals)
 
-                        # استخراج الأسماء من التفاصيل
                         extracted_names = extract_names_from_detail(detail_text)
-
-                        # إذا ما فيش أسماء من النمط، جرب الأسماء الإنجليزية في النص
                         if not extracted_names:
                             en_names = re.findall(
                                 r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,4})\b',
@@ -535,32 +455,26 @@ def extract_pdf_bank_statement(file) -> pd.DataFrame:
                                 for name in extracted_names:
                                     rows.append({"name": name, "amount": amount, "detail": detail_text})
                             else:
-                                # احفظ التفاصيل كاملة كـ "اسم" للمقارنة
                                 if detail_text and len(detail_text) > 3:
                                     rows.append({"name": detail_text[:80], "amount": amount, "detail": detail_text})
-
             else:
-                # استخراج نصي
                 text = page.extract_text() or ""
                 for line in text.split("\n"):
                     amount = None
                     amt_match = re.search(r'\b(\d{1,6}(?:\.\d{1,2})?)\b', line)
                     if amt_match:
                         amount = float(amt_match.group(1))
-
                     names = extract_names_from_detail(line)
                     if not names:
                         en = re.findall(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})\b', line)
                         names = en
-
                     if amount and amount > 0 and names:
                         for name in names:
                             rows.append({"name": name, "amount": amount, "detail": line})
 
     if not rows:
-        return pd.DataFrame(columns=["name","amount","detail"])
-
-    df = pd.DataFrame(rows).drop_duplicates(subset=["name","amount"])
+        return pd.DataFrame(columns=["name", "amount", "detail"])
+    df = pd.DataFrame(rows).drop_duplicates(subset=["name", "amount"])
     return df
 
 
@@ -609,7 +523,7 @@ def extract_csv(file) -> pd.DataFrame:
         return pd.DataFrame(columns=["name","amount","detail"])
 
     nc = next((c for c in df.columns if any(k in str(c).lower() for k in NAME_KW)),   df.columns[0])
-    ac = next((c for c in df.columns if any(k in str(c).lower() for k in AMOUNT_KW)), df.columns[min(1,len(df.columns)-1)])
+    ac = next((c for c in df.columns if any(k in str(c).lower() for k in AMOUNT_KW)), df.columns[min(1, len(df.columns)-1)])
 
     rows = []
     for _, row in df.iterrows():
@@ -622,7 +536,7 @@ def extract_csv(file) -> pd.DataFrame:
 
 def smart_extract(file, filename: str) -> pd.DataFrame:
     ext = filename.rsplit(".", 1)[-1].lower()
-    if ext in ["xlsx","xls"]:
+    if ext in ["xlsx", "xls"]:
         return extract_excel(file)
     elif ext == "pdf":
         return extract_pdf_bank_statement(file)
@@ -640,7 +554,7 @@ def smart_extract(file, filename: str) -> pd.DataFrame:
 
 
 # ╔══════════════════════════════════════════╗
-#   المطابقة الذكية مع دعم عربي/إنجليزي
+#   المطابقة الذكية
 # ╚══════════════════════════════════════════╝
 def match_entries(
     manual: list,
@@ -660,14 +574,11 @@ def match_entries(
         best_score = 0
         best_idx   = -1
 
-        # قارن مع كل سجل في الملف
         for idx, file_row in file_copy[~file_copy["_used"]].iterrows():
-            # احسب التشابه الذكي
-            score = smart_name_similarity(m_name, file_row["name"])
+            score = smart_name_similarity(m_name, str(file_row["name"]))
 
-            # إذا فيه حقل تفاصيل، جرب معه كمان
-            if "detail" in file_copy.columns and file_row.get("detail",""):
-                detail_names = extract_names_from_detail(str(file_row["detail"]))
+            if "detail" in file_copy.columns and str(file_row.get("detail", "")):
+                detail_names = extract_names_from_detail(str(file_row.get("detail", "")))
                 for dn in detail_names:
                     s2 = smart_name_similarity(m_name, dn)
                     if s2 > score:
@@ -681,24 +592,24 @@ def match_entries(
             file_amt = file_copy.at[best_idx, "amount"]
             diff     = round(m_amount - file_amt, 2)
             amt_ok   = abs(diff) <= amount_tolerance * max(m_amount, 1)
-
             file_copy.at[best_idx, "_used"] = True
 
             results.append({
-                "الاسم (يدوي)":      m_name,
-                "المبلغ (يدوي)":     m_amount,
-                "الاسم (ملف)":       file_copy.at[best_idx, "name"],
-                "المبلغ (ملف)":      file_amt,
-                "الفرق":             diff,
-                "درجة التشابه":      f"{best_score}%",
-                "الحالة":            "✅ مطابق" if amt_ok else "⚠️ اسم مطابق / مبلغ مختلف",
-                "_status":           "matched" if amt_ok else "partial"
+                "الاسم (يدوي)":  m_name,
+                "المبلغ (يدوي)": m_amount,
+                "الاسم (ملف)":   file_copy.at[best_idx, "name"],
+                "المبلغ (ملف)":  file_amt,
+                "الفرق":         diff,
+                "درجة التشابه":  f"{best_score}%",
+                "الحالة":        "✅ مطابق" if amt_ok else "⚠️ اسم مطابق / مبلغ مختلف",
+                "_status":       "matched" if amt_ok else "partial"
             })
         else:
+            closest = file_copy.at[best_idx, "name"] if best_idx >= 0 else "—"
             results.append({
                 "الاسم (يدوي)":  m_name,
                 "المبلغ (يدوي)": m_amount,
-                "الاسم (ملف)":   f"أقرب: {file_copy.at[best_idx,'name'] if best_idx>=0 else '—'} ({best_score}%)",
+                "الاسم (ملف)":   f"أقرب: {closest} ({best_score}%)",
                 "المبلغ (ملف)":  0,
                 "الفرق":         m_amount,
                 "درجة التشابه":  f"{best_score}%",
@@ -706,7 +617,6 @@ def match_entries(
                 "_status":       "not_found"
             })
 
-    # ما تبقى في الملف
     for idx, row in file_copy[~file_copy["_used"]].iterrows():
         results.append({
             "الاسم (يدوي)":  "—",
@@ -725,7 +635,7 @@ def match_entries(
 # ╔══════════════════════════════════════════╗
 #   تصدير Excel
 # ╚══════════════════════════════════════════╝
-def export_excel(match_df: pd.DataFrame, manual: list) -> bytes:
+def export_excel_report(match_df: pd.DataFrame, manual: list) -> bytes:
     wb = openpyxl.Workbook()
     STATUS_COLORS = {
         "matched":   "D4EDDA",
@@ -738,6 +648,7 @@ def export_excel(match_df: pd.DataFrame, manual: list) -> bytes:
     h_fill = PatternFill("solid", fgColor="1A1A2E")
     h_font = Font(color="FFFFFF", bold=True, size=11)
 
+    # ── ورقة المطابقة ──
     ws1 = wb.active
     ws1.title = "تقرير المطابقة"
     ws1.sheet_view.rightToLeft = True
@@ -745,7 +656,8 @@ def export_excel(match_df: pd.DataFrame, manual: list) -> bytes:
     cols = ["الاسم (يدوي)","المبلغ (يدوي)","الاسم (ملف)","المبلغ (ملف)","الفرق","درجة التشابه","الحالة"]
     for ci, h in enumerate(cols, 1):
         c = ws1.cell(row=1, column=ci, value=h)
-        c.fill = h_fill; c.font = h_font
+        c.fill = h_fill
+        c.font = h_font
         c.alignment = Alignment(horizontal="center", vertical="center")
 
     for ri, row in match_df[cols].iterrows():
@@ -760,27 +672,30 @@ def export_excel(match_df: pd.DataFrame, manual: list) -> bytes:
     for col in ws1.columns:
         ws1.column_dimensions[col[0].column_letter].width = 26
 
+    # ── ورقة الإدخال اليومي ──
     ws2 = wb.create_sheet("الإدخال اليومي")
     ws2.sheet_view.rightToLeft = True
     for ci, h in enumerate(["م","الاسم","المبلغ","الوقت"], 1):
         c = ws2.cell(row=1, column=ci, value=h)
-        c.fill = h_fill; c.font = h_font
+        c.fill = h_fill
+        c.font = h_font
     for i, e in enumerate(manual, 2):
         ws2.cell(row=i, column=1, value=e["id"])
         ws2.cell(row=i, column=2, value=e["name"])
         ws2.cell(row=i, column=3, value=e["amount"])
-        ws2.cell(row=i, column=4, value=e.get("time",""))
+        ws2.cell(row=i, column=4, value=e.get("time", ""))
 
+    # ── ورقة الملخص ──
     ws3 = wb.create_sheet("الملخص")
     ws3.sheet_view.rightToLeft = True
     total_manual = sum(e["amount"] for e in manual)
     stats = [
-        ("التاريخ",                  today_str),
-        ("إجمالي المدخلات اليدوية",  total_manual),
-        ("✅ مطابق تماماً",          len(match_df[match_df["_status"]=="matched"])),
-        ("⚠️ مبلغ مختلف",           len(match_df[match_df["_status"]=="partial"])),
-        ("❌ غير موجود",            len(match_df[match_df["_status"]=="not_found"])),
-        ("🔍 في الملف فقط",         len(match_df[match_df["_status"]=="file_only"])),
+        ("التاريخ",                 today_str),
+        ("إجمالي المدخلات اليدوية", total_manual),
+        ("✅ مطابق تماماً",         len(match_df[match_df["_status"] == "matched"])),
+        ("⚠️ مبلغ مختلف",          len(match_df[match_df["_status"] == "partial"])),
+        ("❌ غير موجود",            len(match_df[match_df["_status"] == "not_found"])),
+        ("🔍 في الملف فقط",         len(match_df[match_df["_status"] == "file_only"])),
     ]
     for ri, (k, v) in enumerate(stats, 1):
         ws3.cell(row=ri, column=1, value=k).font = Font(bold=True)
@@ -802,13 +717,16 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-for key in ["file_df","match_result"]:
-    if key not in st.session_state:
-        st.session_state[key] = None
+# Session State
+for _key in ["file_df", "match_result"]:
+    if _key not in st.session_state:
+        st.session_state[_key] = None
 
 entries = get_today_entries()
 
-# ── شريط جانبي ──
+# ╔══════════════════════════════════════════╗
+#   الشريط الجانبي
+# ╚══════════════════════════════════════════╝
 with st.sidebar:
     st.markdown('<div class="section-title">➕ إدخال يومي</div>', unsafe_allow_html=True)
 
@@ -826,7 +744,7 @@ with st.sidebar:
 
     st.divider()
 
-    # 🔍 اختبار التشابه
+    # 🧪 اختبار التشابه
     with st.expander("🧪 اختبر تشابه اسمين"):
         test_a = st.text_input("الاسم الأول", placeholder="انجود العبادله")
         test_b = st.text_input("الاسم الثاني", placeholder="Njwad Alabdla")
@@ -844,24 +762,29 @@ with st.sidebar:
 
     if uploaded:
         with st.spinner("⏳ استخراج البيانات..."):
-            df = smart_extract(uploaded, uploaded.name)
-        if not df.empty:
-            st.session_state.file_df = df
-            st.success(f"✅ {len(df)} سجل")
-            with st.expander("👁️ معاينة"):
-                st.dataframe(df[["name","amount"]].head(15), use_container_width=True)
+            file_df_extracted = smart_extract(uploaded, uploaded.name)
+        if not file_df_extracted.empty:
+            st.session_state.file_df = file_df_extracted
+            st.success(f"✅ {len(file_df_extracted)} سجل تم استخراجه")
+            with st.expander("👁️ معاينة الملف"):
+                st.dataframe(
+                    file_df_extracted[["name","amount"]].head(15),
+                    use_container_width=True
+                )
         else:
-            st.error("❌ لم يُعثر على بيانات")
+            st.error("❌ لم يُعثر على بيانات في الملف")
 
     st.divider()
 
-    st.markdown('<div class="section-title">⚙️ إعدادات</div>', unsafe_allow_html=True)
-    threshold = st.slider("🎯 حساسية تشابه الاسم", 50, 95, 70)
+    st.markdown('<div class="section-title">⚙️ إعدادات المطابقة</div>', unsafe_allow_html=True)
+    threshold = st.slider("🎯 حساسية تشابه الاسم", 50, 95, 70,
+                          help="كلما قلّت القيمة كان أكثر تسامحاً مع الاختلافات")
     tolerance = st.slider("💱 هامش فرق المبلغ %", 0, 10, 1) / 100
 
     st.divider()
-    c1, c2 = st.columns(2)
-    with c1:
+
+    col_run, col_clr = st.columns(2)
+    with col_run:
         if st.button("🔄 مطابقة"):
             if not entries:
                 st.error("لا يوجد مدخلات!")
@@ -876,87 +799,177 @@ with st.sidebar:
                         amount_tolerance=tolerance
                     )
                 st.success("✅ اكتملت!")
-    with c2:
+    with col_clr:
         if st.button("🗑️ مسح"):
             clear_today()
             st.session_state.match_result = None
             st.session_state.file_df      = None
             st.rerun()
 
-# ── تبويبات ──
-tab1, tab2, tab3 = st.tabs(["📋 المدخلات اليومية","🔍 نتائج المطابقة","📅 السجل التاريخي"])
 
+# ╔══════════════════════════════════════════╗
+#   التبويبات الرئيسية
+# ╚══════════════════════════════════════════╝
+tab1, tab2, tab3 = st.tabs([
+    "📋 المدخلات اليومية",
+    "🔍 نتائج المطابقة",
+    "📅 السجل التاريخي"
+])
+
+# ═══════════════════════════════
+#   تبويب 1 — المدخلات اليومية
+# ═══════════════════════════════
 with tab1:
     entries = get_today_entries()
-    total = sum(e["amount"] for e in entries)
-    count = len(entries)
-    c1,c2,c3,c4 = st.columns(4)
-    c1.markdown(f'<div class="metric-card card-blue"><div class="metric-value">{count}</div><div class="metric-label">عدد الإدخالات</div></div>', unsafe_allow_html=True)
-    c2.markdown(f'<div class="metric-card card-green"><div class="metric-value">{total:,.2f}</div><div class="metric-label">الإجمالي</div></div>', unsafe_allow_html=True)
-    c3.markdown(f'<div class="metric-card card-orange"><div class="metric-value">{total/count:,.2f if count else 0}</div><div class="metric-label">المتوسط</div></div>', unsafe_allow_html=True)
-    c4.markdown(f'<div class="metric-card card-red"><div class="metric-value">{today_str}</div><div class="metric-label">التاريخ</div></div>', unsafe_allow_html=True)
+    count   = len(entries)
+    total   = sum(e["amount"] for e in entries)
+    avg     = round(total / count, 2) if count else 0   # ✅ تصحيح الخطأ هنا
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.markdown(
+        f'<div class="metric-card card-blue">'
+        f'<div class="metric-value">{count}</div>'
+        f'<div class="metric-label">عدد الإدخالات</div></div>',
+        unsafe_allow_html=True
+    )
+    c2.markdown(
+        f'<div class="metric-card card-green">'
+        f'<div class="metric-value">{total:,.2f}</div>'
+        f'<div class="metric-label">الإجمالي</div></div>',
+        unsafe_allow_html=True
+    )
+    c3.markdown(
+        f'<div class="metric-card card-orange">'
+        f'<div class="metric-value">{avg:,.2f}</div>'         # ✅ متغير منفصل
+        f'<div class="metric-label">المتوسط</div></div>',
+        unsafe_allow_html=True
+    )
+    c4.markdown(
+        f'<div class="metric-card card-red">'
+        f'<div class="metric-value">{today_str}</div>'
+        f'<div class="metric-label">التاريخ</div></div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown("---")
+    st.markdown('<div class="section-title">📋 قائمة اليوم</div>', unsafe_allow_html=True)
+
     if entries:
         df_show = pd.DataFrame(entries)[["id","name","amount","time"]]
         df_show.columns = ["م","الاسم","المبلغ","الوقت"]
         st.dataframe(df_show, use_container_width=True, hide_index=True)
-        del_id = st.number_input("رقم الإدخال للحذف", min_value=1, step=1)
-        if st.button("🗑️ حذف"):
+
+        st.markdown("**حذف إدخال:**")
+        del_id = st.number_input("رقم الإدخال للحذف", min_value=1, step=1, key="del_input")
+        if st.button("🗑️ حذف هذا الإدخال"):
             delete_entry(int(del_id))
             st.rerun()
     else:
-        st.info("📭 لا توجد مدخلات اليوم")
+        st.info("📭 لا توجد مدخلات اليوم — أضف من الشريط الجانبي")
 
+# ═══════════════════════════════
+#   تبويب 2 — نتائج المطابقة
+# ═══════════════════════════════
 with tab2:
     if st.session_state.match_result is not None:
-        mr = st.session_state.match_result
-        matched   = len(mr[mr["_status"]=="matched"])
-        partial   = len(mr[mr["_status"]=="partial"])
-        not_found = len(mr[mr["_status"]=="not_found"])
-        file_only = len(mr[mr["_status"]=="file_only"])
+        mr        = st.session_state.match_result
+        matched   = len(mr[mr["_status"] == "matched"])
+        partial   = len(mr[mr["_status"] == "partial"])
+        not_found = len(mr[mr["_status"] == "not_found"])
+        file_only = len(mr[mr["_status"] == "file_only"])
         total_r   = len(mr)
-        pct       = round(matched/total_r*100,1) if total_r else 0
+        pct       = round(matched / total_r * 100, 1) if total_r else 0
 
-        c1,c2,c3,c4,c5 = st.columns(5)
-        c1.markdown(f'<div class="metric-card card-green"><div class="metric-value">{matched}</div><div class="metric-label">✅ مطابق</div></div>',    unsafe_allow_html=True)
-        c2.markdown(f'<div class="metric-card card-orange"><div class="metric-value">{partial}</div><div class="metric-label">⚠️ فرق مبلغ</div></div>', unsafe_allow_html=True)
-        c3.markdown(f'<div class="metric-card card-red"><div class="metric-value">{not_found}</div><div class="metric-label">❌ غير موجود</div></div>',  unsafe_allow_html=True)
-        c4.markdown(f'<div class="metric-card card-blue"><div class="metric-value">{file_only}</div><div class="metric-label">🔍 ملف فقط</div></div>',   unsafe_allow_html=True)
-        c5.markdown(f'<div class="metric-card card-green"><div class="metric-value">{pct}%</div><div class="metric-label">نسبة المطابقة</div></div>',    unsafe_allow_html=True)
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.markdown(
+            f'<div class="metric-card card-green">'
+            f'<div class="metric-value">{matched}</div>'
+            f'<div class="metric-label">✅ مطابق</div></div>',
+            unsafe_allow_html=True
+        )
+        c2.markdown(
+            f'<div class="metric-card card-orange">'
+            f'<div class="metric-value">{partial}</div>'
+            f'<div class="metric-label">⚠️ فرق مبلغ</div></div>',
+            unsafe_allow_html=True
+        )
+        c3.markdown(
+            f'<div class="metric-card card-red">'
+            f'<div class="metric-value">{not_found}</div>'
+            f'<div class="metric-label">❌ غير موجود</div></div>',
+            unsafe_allow_html=True
+        )
+        c4.markdown(
+            f'<div class="metric-card card-blue">'
+            f'<div class="metric-value">{file_only}</div>'
+            f'<div class="metric-label">🔍 ملف فقط</div></div>',
+            unsafe_allow_html=True
+        )
+        c5.markdown(
+            f'<div class="metric-card card-green">'
+            f'<div class="metric-value">{pct}%</div>'
+            f'<div class="metric-label">نسبة المطابقة</div></div>',
+            unsafe_allow_html=True
+        )
 
-        st.progress(pct/100)
+        st.progress(pct / 100)
         st.markdown("---")
 
         filter_opts = st.multiselect(
-            "🔎 فلترة",
-            ["✅ مطابق","⚠️ اسم مطابق / مبلغ مختلف","❌ غير موجود في الملف","🔍 موجود في الملف فقط"],
-            default=["✅ مطابق","⚠️ اسم مطابق / مبلغ مختلف","❌ غير موجود في الملف","🔍 موجود في الملف فقط"]
+            "🔎 فلترة حسب الحالة",
+            [
+                "✅ مطابق",
+                "⚠️ اسم مطابق / مبلغ مختلف",
+                "❌ غير موجود في الملف",
+                "🔍 موجود في الملف فقط"
+            ],
+            default=[
+                "✅ مطابق",
+                "⚠️ اسم مطابق / مبلغ مختلف",
+                "❌ غير موجود في الملف",
+                "🔍 موجود في الملف فقط"
+            ]
         )
-        display_cols = ["الاسم (يدوي)","المبلغ (يدوي)","الاسم (ملف)","المبلغ (ملف)","الفرق","درجة التشابه","الحالة"]
-        filtered = mr[mr["الحالة"].apply(lambda x: any(s in x for s in filter_opts))]
+
+        display_cols = [
+            "الاسم (يدوي)","المبلغ (يدوي)",
+            "الاسم (ملف)","المبلغ (ملف)",
+            "الفرق","درجة التشابه","الحالة"
+        ]
+        filtered = mr[
+            mr["الحالة"].apply(lambda x: any(s in x for s in filter_opts))
+        ]
         st.dataframe(filtered[display_cols], use_container_width=True, hide_index=True)
 
         entries_now = get_today_entries()
         if entries_now:
-            xl = export_excel(mr, entries_now)
-            st.download_button("📥 تحميل التقرير Excel", xl,
-                               f"تقرير_{today_str}.xlsx",
-                               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            xl_bytes = export_excel_report(mr, entries_now)
+            st.download_button(
+                label="📥 تحميل التقرير Excel",
+                data=xl_bytes,
+                file_name=f"تقرير_مطابقة_{today_str}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
     else:
-        st.info("⏳ ارفع ملفاً واضغط 🔄 مطابقة")
+        st.info("⏳ ارفع ملفاً واضغط 🔄 مطابقة من الشريط الجانبي")
 
+# ═══════════════════════════════
+#   تبويب 3 — السجل التاريخي
+# ═══════════════════════════════
 with tab3:
     st.markdown('<div class="section-title">📅 السجل التاريخي</div>', unsafe_allow_html=True)
     all_data = load_data()
+
     if all_data:
         for day in sorted(all_data.keys(), reverse=True):
             day_ent   = all_data[day]
             day_total = sum(e["amount"] for e in day_ent)
-            with st.expander(f"📅 {day} — {len(day_ent)} إدخال | الإجمالي: {day_total:,.2f}"):
+            with st.expander(
+                f"📅 {day}  —  {len(day_ent)} إدخال  |  الإجمالي: {day_total:,.2f}"
+            ):
                 if day_ent:
-                    df_d = pd.DataFrame(day_ent)[["id","name","amount","time"]]
-                    df_d.columns = ["م","الاسم","المبلغ","الوقت"]
-                    st.dataframe(df_d, use_container_width=True, hide_index=True)
+                    df_day = pd.DataFrame(day_ent)[["id","name","amount","time"]]
+                    df_day.columns = ["م","الاسم","المبلغ","الوقت"]
+                    st.dataframe(df_day, use_container_width=True, hide_index=True)
     else:
-        st.info("📭 لا يوجد سجل بعد")
+        st.info("📭 لا يوجد سجل تاريخي بعد")
