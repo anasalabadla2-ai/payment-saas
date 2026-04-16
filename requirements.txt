@@ -3,3 +3,4 @@ pdfplumber
 fuzzywuzzy
 python-Levenshtein
 openpyxl
+streamlit
